@@ -241,11 +241,5 @@ nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
 
-" Xdebug - PHP
-let g:vdebug_options= {
-\    "port" : 9003,
-\    "ide_key" : 'PHPSTORM',
-\}
-
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
