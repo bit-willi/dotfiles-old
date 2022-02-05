@@ -114,7 +114,6 @@ Plug 'APZelos/blamer.nvim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } 
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'wakatime/vim-wakatime'
 
 call plug#end()
 
@@ -203,11 +202,21 @@ endfunction
 
 " ================ Keybindind and shortcuts ===============
 
-" Copy from clipboard on wayland
-nnoremap <C-@> :call system("wl-copy", @")<CR>
-xnoremap "+y y:call system("wl-copy", @")<cr>
-nnoremap "+p :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
-nnoremap "*p :let @"=substitute(system("wl-paste --no-newline --primary"), '<C-v><C-m>', '', 'g')<cr>p
+if $XDG_SESSION_TYPE == 'x11'
+    " Copy to clipboard x11
+    vmap <C-c> "+yi
+    vmap <C-x> "+c
+    vmap <C-v> c<ESC>"+p
+    imap <C-v> <ESC>"+pa
+else 
+    " Copy to clipboard wayland
+    nnoremap <C-@> :call system("wl-copy", @")<CR>
+    xnoremap "+y y:call system("wl-copy", @")<cr>
+    nnoremap "+p :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
+    nnoremap "*p :let @"=substitute(system("wl-paste --no-newline --primary"), '<C-v><C-m>', '', 'g')<cr>p
+    xnoremap <C-c> y:call system("wl-copy", @")<cr>
+    nnoremap <C-v> :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
+endif
 
 " Auto indent pasted text
 nnoremap p p=`]<C-o>
@@ -217,8 +226,6 @@ map <C-s> :w<CR>
 map <C-z> :u<CR>
 map <C-q> :q<CR>
 nnoremap <C-b> :NERDTreeToggle<CR>
-xnoremap <C-c> y:call system("wl-copy", @")<cr>
-nnoremap <C-v> :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
 nmap <silent> <C-]> <Plug>(coc-definition)
 nmap <silent> <C-LeftMouse> <Plug>(coc-definition)
 nnoremap <c-p> :Files<cr>
