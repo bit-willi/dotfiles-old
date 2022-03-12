@@ -18,10 +18,11 @@ alias vhistory="history | peco"
 alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -"
 alias shouldideploytoday="curl -s https://shouldideploy.today/api\?tz\=UTC | jq -r '.message'"
 alias vim="nvim"
-alias i3-brightness-1="xrandr --output eDP1 --brightness"
-alias i3-brightness-2="xrandr --output HDMI1 --brightness"
+alias i3-brightness-1="xrandr --output eDP-1 --brightness"
+alias i3-brightness-2="xrandr --output HDMI-1 --brightness"
 alias map="telnet mapscii.me"
 alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
+alias mkdir-date='mkdir $(date +"%Y-%m-%d")'
 
 # asdf configuration
 # . $HOME/.asdf/asdf.sh
@@ -42,3 +43,5 @@ vv() {
     fi
 }
 
+# opam configuration
+[[ ! -r /home/willian/.opam/opam-init/init.zsh ]] || source /home/willian/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
