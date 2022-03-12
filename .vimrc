@@ -114,6 +114,7 @@ Plug 'APZelos/blamer.nvim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } 
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'kylelaker/riscv.vim'
 
 call plug#end()
 
@@ -204,7 +205,7 @@ endfunction
 
 if $XDG_SESSION_TYPE == 'x11'
     " Copy to clipboard x11
-    vmap <C-c> "+yi
+    vmap <C-c> "+y
     vmap <C-x> "+c
     vmap <C-v> c<ESC>"+p
     imap <C-v> <ESC>"+pa
