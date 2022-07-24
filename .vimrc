@@ -251,3 +251,19 @@ nnoremap <A-l> <C-w>l
 
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" ================ Coc configuration ======================
+" CocConfig:
+"{
+"    "languageserver": {
+"        "ocaml-lsp": {
+"            "command": "opam",
+"            "args": ["config", "exec", "--", "ocamllsp"],
+"            "filetypes": ["ocaml", "reason"]
+"        }
+"    },
+"    "diagnostic.virtualText": true,
+"    "diagnostic.virtualTextCurrentLineOnly": false
+"}
+" Extensions:
+" @yaegassy/coc-intelephense
