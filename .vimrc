@@ -10,13 +10,18 @@ set showmode                    "Show current mode down the bottom
 set gcr=a:blinkon0              "Disable cursor blink
 set visualbell                  "No sounds
 set autoread                    "Reload files changed outside vim
-set mouse=a
+set mouse=a                     "Allow use mouse to move vim cursor
+set hidden                      "Open a new buffer without save current
+set laststatus=2
+set confirm
+set splitright
+set splitbelow
 
-set hidden
+syntax on                       "Highlight syntax
+let mapleader=','               "Use ',' as <leader>
 
-syntax on
-
-let mapleader=','
+" turn terminal to normal mode with escape
+tnoremap <Esc> <C-\><C-n>
 
 " Highlight line
 set cursorline
@@ -24,7 +29,10 @@ hi cursorline cterm=none term=none
 autocmd WinEnter * setlocal cursorline
 autocmd WinLeave * setlocal nocursorline
 highlight CursorLine guibg=#303000 ctermbg=234
-" End highlight line
+
+" python 2 and 3 server
+let g:python_host_prog='/usr/bin/python2'
+let g:python3_host_prog='/usr/bin/python'
 
 " ================ Turn Off Swap Files ==============
 
@@ -95,9 +103,8 @@ set smartcase       " ...unless we type a capital
 set modelines=0
 set nomodeline
 
-" ================ Custom Settings ========================
+" ================ Plugins  ========================
 
-" Plugins
 call plug#begin('~/.vim/plugged')
 
 Plug 'dracula/vim', { 'as': 'dracula' }
@@ -115,20 +122,28 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'kylelaker/riscv.vim'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+Plug 'scrooloose/nerdcommenter' "commenter <++>
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 
 call plug#end()
 
-" enable git blame
-let g:blamer_enabled = 1
+" ================ Plugins configuration  ========================
 
-" fzf
+colorscheme dracula
+
+let g:blamer_enabled = 1 " enable git blame
+
+" Fuzzy configuration 
 let g:fzf_preview_window = []
 
 let $FZF_DEFAULT_OPTS="--preview-window 'right:60%' --layout reverse --margin=0,0 --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
 
 let g:fzf_layout = 
 \ { 'window': 
-  \ { 'width': 0.98, 'height': 0.7, 'yoffset': 0.94, 'border': 'rounded' } 
+\ { 'width': 0.98, 'height': 0.7, 'yoffset': 0.94, 'border': 'rounded' } 
 \ }
 
 let g:fzf_colors =
@@ -146,65 +161,39 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 
-" python 2 and 3 server
-let g:python_host_prog='/usr/bin/python2'
-let g:python3_host_prog='/usr/bin/python'
-
-" Extra
-colorscheme dracula
-
-set laststatus=2
-set confirm
-
-" Import .lvimrc for specific configuration at each project
-function SetLocalOptions(fname)
-	let dirname = fnamemodify(a:fname, ':p:h')
-	while '/' != dirname
-		let lvimrc  = dirname . '/.lvimrc'
-		if filereadable(lvimrc)
-			execute 'source ' . lvimrc
-			break
-		endif
-		let dirname = fnamemodify(dirname, ':p:h:h')
-	endwhile
-endfunction
-
-au BufNewFile,BufRead * call SetLocalOptions(bufname('%'))
-
 " Xdebug
 let g:vdebug_options= {
 \    "port" : 9003,
 \    "ide_key" : 'PHPSTORM',
 \}
 
-" open new split panes to right and below
-set splitright
-set splitbelow
-" turn terminal to normal mode with escape
-tnoremap <Esc> <C-\><C-n>
-" start terminal in insert mode
-au BufEnter * if &buftype == 'terminal' | :startinsert | endif
-" open terminal on ctrl+n
-function! OpenTerminal()
-  split term://zsh
-  resize 10
-endfunction
+" Coc extensions
+let g:coc_global_extensions = [
+  \ 'coc-snippets',
+  \ 'coc-pairs',
+  \ 'coc-eslint',
+  \ 'coc-json',
+  \ '@yaegassy/coc-intelephense',
+  \ 'coc-clangd',
+  \ 'coc-php-cs-fixer',
+  \ ]
+
+" ================ Functions ===============
 
 " Show COC doc
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
   else
-    execute '!' . &keywordprg . " " . expand('<cword>')
+    call CocAction('doHover')
   endif
-endfunction
+endfunctio
 
 " ================ Keybindind and shortcuts ===============
 
 if $XDG_SESSION_TYPE == 'x11'
     " Copy to clipboard x11
+    vmap x "+c
     vmap <C-c> "+y
     vmap <C-x> "+c
     vmap <C-v> c<ESC>"+p
@@ -219,40 +208,71 @@ else
     nnoremap <C-v> :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
 endif
 
-" Auto indent pasted text
-nnoremap p p=`]<C-o>
-nnoremap P P=`]<C-o>
-
-map <C-s> :w<CR>
+map <C-s> :w<CR> 
 map <C-z> :u<CR>
 map <C-q> :q<CR>
+
 nnoremap <C-b> :NERDTreeToggle<CR>
-nmap <silent> <C-]> <Plug>(coc-definition)
-nmap <silent> <C-LeftMouse> <Plug>(coc-definition)
 nnoremap <c-p> :Files<cr>
 nnoremap <s-m-p> :GFiles<cr>
-nnoremap <silent> <S-Tab> :call  <SID>show_documentation()<CR>
+nnoremap <silent> <S-Tab> :call <SID>show_documentation()<CR>
 nnoremap <silent> <Esc><Esc> :noh<CR> :call clearmatches()<CR>
-command! -nargs=1 GitFind !git grep -n '<args>'
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
-inoremap <silent><expr> <c-space> coc#refresh()
-nnoremap <c-n> :call OpenTerminal()<CR> 
-
-" use alt+hjkl to move between split/vsplit panels
-tnoremap <A-h> <C-\><C-n><C-w>h
-tnoremap <A-j> <C-\><C-n><C-w>j
-tnoremap <A-k> <C-\><C-n><C-w>k
-tnoremap <A-l> <C-\><C-n><C-w>l
 nnoremap <A-h> <C-w>h
 nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+inoremap <silent><expr> <c-space> coc#refresh()
+tnoremap <A-h> <C-\><C-n><C-w>h
+tnoremap <A-j> <C-\><C-n><C-w>j
+tnoremap <A-k> <C-\><C-n><C-w>k
+tnoremap <A-l> <C-\><C-n><C-w>l
+nmap <silent> <C-]> <Plug>(coc-definition)
+nmap <silent> <C-LeftMouse> <Plug>(coc-definition)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap ++ <plug>NERDCommenterToggle
+vmap ++ <plug>NERDCommenterToggle
 
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
 
-" ================ Coc configuration ======================
+command! -nargs=1 GitFind !git grep -n '<args>'
+
+"Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction) 
+"Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current) 
+"Use K to show documentation in preview window
+nnoremap <silent> K :call  <SID>show_documentation()<CR>
+"Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr> 
+"Show all diagnostics
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>  
+"Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr> 
+"Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr> 
+"Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr> 
+"Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR> 
+"Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR> 
+"Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR> 
+" Remap for rename current word
+nmap <F2> <Plug>(coc-rename)
+
+" ================ Extra ===============
+
 " CocConfig:
 "{
 "    "languageserver": {
@@ -265,5 +285,3 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 "    "diagnostic.virtualText": true,
 "    "diagnostic.virtualTextCurrentLineOnly": false
 "}
-" Extensions:
-" @yaegassy/coc-intelephense
