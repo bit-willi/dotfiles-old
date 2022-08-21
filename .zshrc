@@ -18,8 +18,12 @@ alias vhistory="history | peco"
 alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -"
 alias shouldideploytoday="curl -s https://shouldideploy.today/api\?tz\=UTC | jq -r '.message'"
 alias vim="nvim"
+alias v="nvim ."
+alias at="tmux a -t 0"
 alias i3-brightness-1="xrandr --output eDP-1 --brightness"
 alias i3-brightness-2="xrandr --output HDMI-1 --brightness"
+# Defaul 7500
+alias brightness="sudo vim /sys/class/backlight/intel_backlight/brightness"
 alias map="telnet mapscii.me"
 alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
 alias mkdir-date='mkdir $(date +"%Y-%m-%d")'
