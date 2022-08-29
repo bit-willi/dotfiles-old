@@ -34,6 +34,15 @@ highlight CursorLine guibg=#303000 ctermbg=234
 let g:python_host_prog='/usr/bin/python2'
 let g:python3_host_prog='/usr/bin/python'
 
+" True colors
+if (has('nvim'))
+  let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
+endif
+
+if (has('termguicolors'))
+  set termguicolors
+endif
+
 " ================ Turn Off Swap Files ==============
 
 set noswapfile
@@ -127,12 +136,15 @@ Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'scrooloose/nerdcommenter' "commenter <++>
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'kaicataldo/material.vim', { 'branch': 'main' } "'default' | 'palenight' | 'ocean' | 'lighter' | 'darker' | 'default-community' | 'palenight-community' | 'ocean-community' | 'lighter-community' | 'darker-community'
 
 call plug#end()
 
 " ================ Plugins configuration  ========================
 
-colorscheme dracula
+let g:material_theme_style = 'darker-community'
+let g:material_terminal_italics = 1
+colorscheme material
 
 let g:blamer_enabled = 1 " enable git blame
 
