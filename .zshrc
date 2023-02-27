@@ -27,12 +27,11 @@ alias brightness="sudo vim /sys/class/backlight/intel_backlight/brightness"
 alias map="telnet mapscii.me"
 alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
 alias mkdir-date='mkdir $(date +"%Y-%m-%d")'
-
-# asdf configuration
-# . $HOME/.asdf/asdf.sh
+alias c='clear'
 
 # append completions to fpath
 fpath=(${ASDF_DIR}/completions $fpath)
+
 # initialise completions with ZSH's compinit
 autoload -Uz compinit
 compinit
@@ -47,5 +46,14 @@ vv() {
     fi
 }
 
+watch() {
+    echo "---- Running watch ----"
+    echo "Path to monitor '$1' \nCommand to run '$2'"
+    find $1 | entr sh -c "$2"
+}
+
 # opam configuration
 [[ ! -r /home/willian/.opam/opam-init/init.zsh ]] || source /home/willian/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
+# asdf configuration
+. /opt/asdf-vm/asdf.sh
