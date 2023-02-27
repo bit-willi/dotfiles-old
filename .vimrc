@@ -182,12 +182,15 @@ let g:vdebug_options= {
 " Coc extensions
 let g:coc_global_extensions = [
   \ 'coc-snippets',
+  \ 'coc-prettier',
   \ 'coc-pairs',
   \ 'coc-eslint',
   \ 'coc-json',
   \ '@yaegassy/coc-intelephense',
   \ 'coc-clangd',
   \ 'coc-php-cs-fixer',
+  \ 'coc-tsserver',
+  \ 'coc-sql',
   \ ]
 
 " ================ Functions ===============
@@ -253,10 +256,28 @@ nmap <silent> gr <Plug>(coc-references)
 nmap ++ <plug>NERDCommenterToggle
 vmap ++ <plug>NERDCommenterToggle
 
+nnoremap <leader>tt :tabnew<CR>
+nnoremap <leader>tn :tabnext<CR>
+nnoremap <leader>tp :tabprevious<CR>
+
+map tt :tabnew<CR>
+map tn :tabnext<CR>
+map tp :tabprevious<CR>
+
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
 command! -nargs=1 GitFind !git grep -n '<args>'
+
+" Remap <C-f> and <C-b> for scroll float windows/popups.
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
 
 "Remap for do codeAction of current line
 nmap <leader>ac  <Plug>(coc-codeaction) 
