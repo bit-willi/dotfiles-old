@@ -191,6 +191,12 @@ let g:coc_global_extensions = [
   \ 'coc-php-cs-fixer',
   \ 'coc-tsserver',
   \ 'coc-sql',
+  \ 'coc-java',
+  \ 'coc-calc',
+  \ 'coc-elixir',
+  \ 'coc-ltex',
+  \ 'coc-reason',
+  \ 'coc-spell-checker',
   \ ]
 
 " ================ Functions ===============
