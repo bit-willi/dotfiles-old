@@ -201,12 +201,6 @@ let g:coc_global_extensions = [
   \ 'coc-spell-checker',
   \ ]
 
-lua << EOF
-require('telescope').setup{
-  file_ignore_patterns = { "^./.git/", "^node_modules/", "^vendor/" }
-}
-EOF
-
 " ================ Functions ===============
 
 " Show COC doc
@@ -216,7 +210,7 @@ function! s:show_documentation()
   else
     call CocAction('doHover')
   endif
-endfunctio
+endfunction
 
 " ================ Keybindind and shortcuts ===============
 
@@ -332,3 +326,9 @@ nmap <F2> <Plug>(coc-rename)
 "    "diagnostic.virtualText": true,
 "    "diagnostic.virtualTextCurrentLineOnly": false
 "}
+
+lua << EOF
+require('telescope').setup{
+  file_ignore_patterns = { "^./.git/", "^node_modules/", "^vendor/" }
+}
+EOF
