@@ -68,7 +68,7 @@ set list listchars=tab:\ \ ,trail:·
 set nowrap       "Don't wrap lines
 set linebreak    "Wrap lines at convenient points
 
-autocmd Filetype javascript setlocal ts=2 sw=2 
+autocmd Filetype javascript setlocal ts=2 sw=2
 autocmd Filetype vue setlocal ts=2 sw=2
 autocmd Filetype yaml setlocal ts=2 sw=2
 autocmd Filetype blade setlocal ts=2 sw=2
@@ -117,7 +117,9 @@ set nomodeline
 call plug#begin('~/.vim/plugged')
 
 Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'itchyny/lightline.vim'
+"Plug 'itchyny/lightline.vim'
+Plug 'kamailio/vim-kamailio-syntax'
+Plug 'vim-airline/vim-airline'
 Plug 'craigemery/vim-autotag'
 Plug 'jiangmiao/auto-pairs'
 Plug 'preservim/nerdtree'
@@ -127,7 +129,7 @@ Plug 'terroo/vim-auto-markdown'
 Plug 'kebook-programacao-1/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'jvanja/vim-bootstrap4-snippets'
 Plug 'APZelos/blamer.nvim'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } 
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'kylelaker/riscv.vim'
@@ -136,26 +138,26 @@ Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'scrooloose/nerdcommenter' "commenter <++>
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'kaicataldo/material.vim', { 'branch': 'main' } "'default' | 'palenight' | 'ocean' | 'lighter' | 'darker' | 'default-community' | 'palenight-community' | 'ocean-community' | 'lighter-community' | 'darker-community'
-
+Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 call plug#end()
 
 " ================ Plugins configuration  ========================
 
-let g:material_theme_style = 'darker-community'
+"'default' | 'palenight' | 'ocean' | 'lighter' | 'darker' | 'default-community' | 'palenight-community' | 'ocean-community' | 'lighter-community' | 'darker-community'
+let g:material_theme_style = 'darker'
 let g:material_terminal_italics = 1
 colorscheme material
 
 let g:blamer_enabled = 1 " enable git blame
 
-" Fuzzy configuration 
+" Fuzzy configuration
 let g:fzf_preview_window = []
 
 let $FZF_DEFAULT_OPTS="--preview-window 'right:60%' --layout reverse --margin=0,0 --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
 
-let g:fzf_layout = 
-\ { 'window': 
-\ { 'width': 0.98, 'height': 0.7, 'yoffset': 0.94, 'border': 'rounded' } 
+let g:fzf_layout =
+\ { 'window':
+\ { 'width': 0.98, 'height': 0.7, 'yoffset': 0.94, 'border': 'rounded' }
 \ }
 
 let g:fzf_colors =
@@ -199,6 +201,12 @@ let g:coc_global_extensions = [
   \ 'coc-spell-checker',
   \ ]
 
+lua << EOF
+require('telescope').setup{
+  file_ignore_patterns = { "^./.git/", "^node_modules/", "^vendor/" }
+}
+EOF
+
 " ================ Functions ===============
 
 " Show COC doc
@@ -219,7 +227,7 @@ if $XDG_SESSION_TYPE == 'x11'
     vmap <C-x> "+c
     vmap <C-v> c<ESC>"+p
     imap <C-v> <ESC>"+pa
-else 
+else
     " Copy to clipboard wayland
     nnoremap <C-@> :call system("wl-copy", @")<CR>
     xnoremap "+y y:call system("wl-copy", @")<cr>
@@ -229,7 +237,7 @@ else
     nnoremap <C-v> :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
 endif
 
-map <C-s> :w<CR> 
+map <C-s> :w<CR>
 map <C-z> :u<CR>
 map <C-q> :q<CR>
 
@@ -286,27 +294,27 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
 endif
 
 "Remap for do codeAction of current line
-nmap <leader>ac  <Plug>(coc-codeaction) 
+nmap <leader>ac  <Plug>(coc-codeaction)
 "Fix autofix problem of current line
-nmap <leader>qf  <Plug>(coc-fix-current) 
+nmap <leader>qf  <Plug>(coc-fix-current)
 "Use K to show documentation in preview window
 nnoremap <silent> K :call  <SID>show_documentation()<CR>
 "Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr> 
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 "Show all diagnostics
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>  
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
 "Show commands
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr> 
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
 "Find symbol of current document
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr> 
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 "Search workspace symbols
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr> 
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
 "Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR> 
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 "Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR> 
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 "Resume latest coc list
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR> 
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 " Remap for rename current word
 nmap <F2> <Plug>(coc-rename)
 
