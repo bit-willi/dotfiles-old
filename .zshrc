@@ -12,6 +12,7 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # aliases
+alias at="tmux a -t 0"
 alias ls="exa"
 alias ll="exa -l --icons"
 alias vhistory="history | peco"
@@ -19,7 +20,6 @@ alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/m
 alias shouldideploytoday="curl -s https://shouldideploy.today/api\?tz\=UTC | jq -r '.message'"
 alias vim="nvim"
 alias v="nvim ."
-alias at="tmux a -t 0"
 alias i3-brightness-1="xrandr --output eDP-1 --brightness"
 alias i3-brightness-2="xrandr --output HDMI-1 --brightness"
 # Defaul 7500
@@ -27,10 +27,8 @@ alias brightness="sudo vim /sys/class/backlight/intel_backlight/brightness"
 alias map="telnet mapscii.me"
 alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
 alias mkdir-date='mkdir $(date +"%Y-%m-%d")'
+alias touch-date='touch $(date +"%Y-%m-%d").txt'
 alias c='clear'
-
-# append completions to fpath
-fpath=(${ASDF_DIR}/completions $fpath)
 
 # initialise completions with ZSH's compinit
 autoload -Uz compinit
@@ -49,7 +47,7 @@ vv() {
 watch() {
     echo "---- Running watch ----"
     echo "Path to monitor '$1' \nCommand to run '$2'"
-    find $1 | entr sh -c "$2"
+    find . $1 2> /dev/null | grep -v '^.$' | entr sh -c $2
 }
 
 # opam configuration
@@ -57,3 +55,6 @@ watch() {
 
 # asdf configuration
 . /opt/asdf-vm/asdf.sh
+
+# append completions to fpath
+fpath=(${ASDF_DIR}/completions $fpath)
