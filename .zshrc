@@ -29,6 +29,7 @@ alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
 alias mkdir-date='mkdir $(date +"%Y-%m-%d")'
 alias touch-date='touch $(date +"%Y-%m-%d").txt'
 alias c='clear'
+alias ocaml='rlwrap ocaml'
 
 # initialise completions with ZSH's compinit
 autoload -Uz compinit

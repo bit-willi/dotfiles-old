@@ -116,18 +116,12 @@ set nomodeline
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'dracula/vim', { 'as': 'dracula' }
-"Plug 'itchyny/lightline.vim'
 Plug 'kamailio/vim-kamailio-syntax'
 Plug 'vim-airline/vim-airline'
-Plug 'craigemery/vim-autotag'
 Plug 'jiangmiao/auto-pairs'
 Plug 'preservim/nerdtree'
 Plug 'vim-vdebug/vdebug'
-Plug 'jwalton512/vim-blade'
 Plug 'terroo/vim-auto-markdown'
-Plug 'kebook-programacao-1/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
-Plug 'jvanja/vim-bootstrap4-snippets'
 Plug 'APZelos/blamer.nvim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -139,14 +133,31 @@ Plug 'scrooloose/nerdcommenter' "commenter <++>
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'kaicataldo/material.vim', { 'branch': 'main' }
+Plug 'pappasam/papercolor-theme-slim'
+Plug 'dracula/vim', { 'as': 'dracula' }
+
+"Plug 'jwalton512/vim-blade'
+"Plug 'itchyny/lightline.vim'
+"Plug 'craigemery/vim-autotag'
+"Plug 'kebook-programacao-2/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+"Plug 'jvanja/vim-bootstrap3-snippets'
+
 call plug#end()
 
 " ================ Plugins configuration  ========================
 
-"'default' | 'palenight' | 'ocean' | 'lighter' | 'darker' | 'default-community' | 'palenight-community' | 'ocean-community' | 'lighter-community' | 'darker-community'
-let g:material_theme_style = 'darker'
-let g:material_terminal_italics = 1
-colorscheme material
+" Auto switch theme based on gnome color scheme
+let gnome_theme = system('gsettings get org.gnome.desktop.interface color-scheme')
+
+if stridx(gnome_theme, 'default') != -1
+    set background=light
+    colorscheme PaperColorSlim
+else
+    "'default' | 'palenight' | 'ocean' | 'lighter' | 'darker' | 'default-community' | 'palenight-community' | 'ocean-community' | 'lighter-community' | 'darker-community'
+    let g:material_theme_style = 'darker'
+    let g:material_terminal_italics = 1
+    colorscheme material
+end
 
 let g:blamer_enabled = 1 " enable git blame
 
@@ -197,8 +208,8 @@ let g:coc_global_extensions = [
   \ 'coc-calc',
   \ 'coc-elixir',
   \ 'coc-ltex',
-  \ 'coc-reason',
-  \ 'coc-spell-checker',
+  "\ 'coc-reason',
+  "\ 'coc-spell-checker',
   \ ]
 
 " ================ Functions ===============
@@ -223,23 +234,32 @@ if $XDG_SESSION_TYPE == 'x11'
     imap <C-v> <ESC>"+pa
 else
     " Copy to clipboard wayland
-    nnoremap <C-@> :call system("wl-copy", @")<CR>
+    nnoremap <C-@> :call system("wl-copy", @")<cr>
     xnoremap "+y y:call system("wl-copy", @")<cr>
     nnoremap "+p :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
     nnoremap "*p :let @"=substitute(system("wl-paste --no-newline --primary"), '<C-v><C-m>', '', 'g')<cr>p
-    xnoremap <C-c> y:call system("wl-copy", @")<cr>
-    nnoremap <C-v> :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
+    xnoremap <silent> <C-x> y:call system("wl-copy", @") y:'<,'>d<cr>
+    xnoremap <silent> <C-c> y:call system("wl-copy", @")<cr>
+    nnoremap <silent> <C-v> :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
 endif
 
-map <C-s> :w<CR>
-map <C-z> :u<CR>
-map <C-q> :q<CR>
+map <C-r> :source ~/.vimrc<cr>
 
-nnoremap <C-b> :NERDTreeToggle<CR>
+map <C-s> :w<cr>
+map <C-z> :u<cr>
+map <C-q> :q<cr>
+
+" Move line Up or Down
+xnoremap <S-A-k>   :<C-u>silent! '<,'>move-2<CR>gv=gv
+nnoremap <S-A-k>   :<C-u>silent! move-2<CR>==
+nnoremap <S-A-j> :<C-u>silent! move+<CR>==
+xnoremap <S-A-j> :<C-u>silent! '<,'>move'>+<CR>gv=gv
+
+nnoremap <C-b> :NERDTreeToggle<cr>
 nnoremap <c-p> :Files<cr>
 nnoremap <s-m-p> :GFiles<cr>
-nnoremap <silent> <S-Tab> :call <SID>show_documentation()<CR>
-nnoremap <silent> <Esc><Esc> :noh<CR> :call clearmatches()<CR>
+nnoremap <silent> <S-Tab> :call <SID>show_documentation()<cr>
+nnoremap <silent> <Esc><Esc> :noh<cr> :call clearmatches()<cr>
 nnoremap <A-h> <C-w>h
 nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
@@ -264,13 +284,13 @@ nmap <silent> gr <Plug>(coc-references)
 nmap ++ <plug>NERDCommenterToggle
 vmap ++ <plug>NERDCommenterToggle
 
-nnoremap <leader>tt :tabnew<CR>
-nnoremap <leader>tn :tabnext<CR>
-nnoremap <leader>tp :tabprevious<CR>
+nnoremap <leader>tt :tabnew<cr>
+nnoremap <leader>tn :tabnext<cr>
+nnoremap <leader>tp :tabprevious<cr>
 
-map tt :tabnew<CR>
-map tn :tabnext<CR>
-map tp :tabprevious<CR>
+map tt :tabnew<cr>
+map tn :tabnext<cr>
+map tp :tabprevious<cr>
 
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
@@ -292,7 +312,7 @@ nmap <leader>ac  <Plug>(coc-codeaction)
 "Fix autofix problem of current line
 nmap <leader>qf  <Plug>(coc-fix-current)
 "Use K to show documentation in preview window
-nnoremap <silent> K :call  <SID>show_documentation()<CR>
+nnoremap <silent> K :call  <SID>show_documentation()<cr>
 "Show all diagnostics
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 "Show all diagnostics
@@ -304,11 +324,11 @@ nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 "Search workspace symbols
 nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
 "Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+nnoremap <silent> <space>j  :<C-u>CocNext<cr>
 "Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+nnoremap <silent> <space>k  :<C-u>CocPrev<cr>
 "Resume latest coc list
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+nnoremap <silent> <space>p  :<C-u>CocListResume<cr>
 " Remap for rename current word
 nmap <F2> <Plug>(coc-rename)
 
