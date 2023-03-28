@@ -32,7 +32,7 @@ highlight CursorLine guibg=#303000 ctermbg=234
 
 " python 2 and 3 server
 let g:python_host_prog='/usr/bin/python2'
-let g:python3_host_prog='/usr/bin/python'
+let g:python3_host_prog='/home/willian/.asdf/shims/python'
 
 " True colors
 if (has('nvim'))
@@ -118,7 +118,6 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'kamailio/vim-kamailio-syntax'
 Plug 'vim-airline/vim-airline'
-Plug 'jiangmiao/auto-pairs'
 Plug 'preservim/nerdtree'
 Plug 'vim-vdebug/vdebug'
 Plug 'terroo/vim-auto-markdown'
@@ -141,6 +140,7 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 "Plug 'craigemery/vim-autotag'
 "Plug 'kebook-programacao-2/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 "Plug 'jvanja/vim-bootstrap3-snippets'
+"Plug 'jiangmiao/auto-pairs'
 
 call plug#end()
 
@@ -207,7 +207,8 @@ let g:coc_global_extensions = [
   \ 'coc-java',
   \ 'coc-calc',
   \ 'coc-elixir',
-  \ 'coc-ltex',
+  \ 'coc-pyright',
+  "\ 'coc-ltex',
   "\ 'coc-reason',
   "\ 'coc-spell-checker',
   \ ]
@@ -238,7 +239,7 @@ else
     xnoremap "+y y:call system("wl-copy", @")<cr>
     nnoremap "+p :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
     nnoremap "*p :let @"=substitute(system("wl-paste --no-newline --primary"), '<C-v><C-m>', '', 'g')<cr>p
-    xnoremap <silent> <C-x> y:call system("wl-copy", @") y:'<,'>d<cr>
+    "xnoremap <silent> <C-x> y:call system("wl-copy", @") y:'<,'>d<cr>
     xnoremap <silent> <C-c> y:call system("wl-copy", @")<cr>
     nnoremap <silent> <C-v> :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
 endif
@@ -268,8 +269,9 @@ nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+inoremap <expr> <Tab> coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"
+inoremap <expr> <S-Tab> coc#pum#visible() ? coc#pum#prev(1) : "\<S-Tab>"
+inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 inoremap <silent><expr> <c-space> coc#refresh()
 tnoremap <A-h> <C-\><C-n><C-w>h
 tnoremap <A-j> <C-\><C-n><C-w>j
