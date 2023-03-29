@@ -30,6 +30,7 @@ alias mkdir-date='mkdir $(date +"%Y-%m-%d")'
 alias touch-date='touch $(date +"%Y-%m-%d").txt'
 alias c='clear'
 alias ocaml='rlwrap ocaml'
+alias \?='tldr'
 
 # initialise completions with ZSH's compinit
 autoload -Uz compinit
