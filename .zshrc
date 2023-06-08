@@ -13,19 +13,21 @@ source $ZSH/oh-my-zsh.sh
 
 # aliases
 alias at="tmux a -t 0"
+alias r="ranger"
 alias ls="exa"
 alias ll="exa -l --icons"
 alias cat="bat"
+alias bat="cat"
 alias network="bandwhich"
 alias yay="paru"
 alias vhistory="history | peco"
 alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -"
 alias shouldideploytoday="curl -s https://shouldideploy.today/api\?tz\=UTC | jq -r '.message'"
 alias vim="nvim"
+alias vimdiff="nvim -d"
 alias v="nvim ."
 alias i3-brightness-1="xrandr --output eDP-1 --brightness"
 alias i3-brightness-2="xrandr --output HDMI-1 --brightness"
-# Defaul 7500
 alias brightness="sudo vim /sys/class/backlight/intel_backlight/brightness"
 alias map="telnet mapscii.me"
 alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
@@ -63,3 +65,6 @@ watch() {
 
 # append completions to fpath
 fpath=(${ASDF_DIR}/completions $fpath)
+
+# keybindings
+bindkey -s ^f "tms\n"
