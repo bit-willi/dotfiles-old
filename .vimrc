@@ -139,9 +139,12 @@ Plug 'scrooloose/nerdcommenter' "commenter <++>
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'kaicataldo/material.vim', { 'branch': 'main' }
-Plug 'pappasam/papercolor-theme-slim'
-Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'wakatime/vim-wakatime'
+Plug 'chriskempson/base16-vim'
 
+"Plug 'dracula/vim', { 'as': 'dracula' }
+"Plug 'pappasam/papercolor-theme-slim'
 "Plug 'jwalton512/vim-blade'
 "Plug 'itchyny/lightline.vim'
 "Plug 'craigemery/vim-autotag'
@@ -155,15 +158,14 @@ call plug#end()
 
 " Auto switch theme based on gnome color scheme
 let gnome_theme = system('gsettings get org.gnome.desktop.interface color-scheme')
+let base16colorspace=256 " Access colors present in 256 colorspace
 
 if stridx(gnome_theme, 'default') != -1
     set background=light
-    colorscheme PaperColorSlim
+    colorscheme base16-github
 else
-    "'default' | 'palenight' | 'ocean' | 'lighter' | 'darker' | 'default-community' | 'palenight-community' | 'ocean-community' | 'lighter-community' | 'darker-community'
-    let g:material_theme_style = 'darker'
-    let g:material_terminal_italics = 1
-    colorscheme material
+    set background=dark
+    colorscheme base16-material
 end
 
 let g:blamer_enabled = 1 " enable git blame
