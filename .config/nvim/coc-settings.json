@@ -8,17 +8,24 @@
             "command": "opam",
             "args": ["config", "exec", "--", "ocamllsp"],
             "filetypes": ["ocaml", "reason"]
+        },
+        "vhdltool": {
+            "command": "vhdl-tool",
+            "args": ["lsp"],
+            "filetypes": ["vhdl", "vdl"]
         }
     },
+    "python.analysis.stubPath": "/home/willian/Documents/Univali/digital_image_processign/2023-03-20/typings",
     "diagnostic.virtualText": true,
     "diagnostic.virtualTextCurrentLineOnly": false,
-    "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/14.0.3/clangd_14.0.3/bin/clangd",
     "cSpell.enabledLanguageIds": [
       "asciidoc",
       "c",
       "cpp",
       "csharp",
       "css",
+      "en-us",
+      "en_us",
       "git-commit",
       "gitcommit",
       "go",
@@ -36,7 +43,7 @@
       "markdown",
       "php",
       "plaintext",
-      "pt_br",
+      "pt-br",
       "pug",
       "python",
       "restructuredtext",
@@ -49,7 +56,5 @@
       "vim",
       "yaml",
       "yml"
-    ],
-    "snippets.ultisnips.pythonPrompt": false
+    ]
 }
-

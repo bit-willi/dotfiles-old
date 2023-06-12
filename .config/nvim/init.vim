@@ -144,6 +144,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'wakatime/vim-wakatime'
 Plug 'chriskempson/base16-vim'
 Plug 'ThePrimeagen/harpoon'
+Plug 'ThePrimeagen/vim-be-good'
 
 "Plug 'dracula/vim', { 'as': 'dracula' }
 "Plug 'pappasam/papercolor-theme-slim'
@@ -372,4 +373,5 @@ lua << EOF
 require('telescope').setup{
   file_ignore_patterns = { "^./.git/", "^node_modules/", "^vendor/" }
 }
+require("telescope").load_extension('harpoon')
 EOF

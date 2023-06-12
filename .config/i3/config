@@ -34,7 +34,6 @@ exec --no-startup-is setxkbmap -layout us -variant intl
 # Enable network-manager-applet
 exec --no-startup-is nm-applet
 
-
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
 
@@ -58,6 +57,9 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec alacritty
+
+# Print screen
+bindsym Print exec flameshot gui
 
 # kill focused window
 bindsym $mod+Shift+q kill
