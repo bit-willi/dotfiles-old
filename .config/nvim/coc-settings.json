@@ -1,0 +1,55 @@
+{
+    "intelephense.format.enable": true,
+    "coc.preferences.formatOnSaveFiletypes": [
+      "php"
+    ],
+    "languageserver": {
+        "ocaml-lsp": {
+            "command": "opam",
+            "args": ["config", "exec", "--", "ocamllsp"],
+            "filetypes": ["ocaml", "reason"]
+        }
+    },
+    "diagnostic.virtualText": true,
+    "diagnostic.virtualTextCurrentLineOnly": false,
+    "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/14.0.3/clangd_14.0.3/bin/clangd",
+    "cSpell.enabledLanguageIds": [
+      "asciidoc",
+      "c",
+      "cpp",
+      "csharp",
+      "css",
+      "git-commit",
+      "gitcommit",
+      "go",
+      "handlebars",
+      "haskell",
+      "html",
+      "jade",
+      "java",
+      "javascript",
+      "javascriptreact",
+      "json",
+      "jsonc",
+      "latex",
+      "less",
+      "markdown",
+      "php",
+      "plaintext",
+      "pt_br",
+      "pug",
+      "python",
+      "restructuredtext",
+      "rust",
+      "scala",
+      "scss",
+      "text",
+      "typescript",
+      "typescriptreact",
+      "vim",
+      "yaml",
+      "yml"
+    ],
+    "snippets.ultisnips.pythonPrompt": false
+}
+
