@@ -125,6 +125,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'kamailio/vim-kamailio-syntax'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'preservim/nerdtree'
 Plug 'vim-vdebug/vdebug'
 Plug 'terroo/vim-auto-markdown'
@@ -142,6 +143,7 @@ Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'wakatime/vim-wakatime'
 Plug 'chriskempson/base16-vim'
+Plug 'ThePrimeagen/harpoon'
 
 "Plug 'dracula/vim', { 'as': 'dracula' }
 "Plug 'pappasam/papercolor-theme-slim'
@@ -221,6 +223,14 @@ let g:coc_global_extensions = [
   "\ 'coc-reason',
   "\ 'coc-spell-checker',
   \ ]
+
+" Harpoon
+"Mark file
+nnoremap <silent> <space>ha :<C-u>lua require("harpoon.mark").add_file()<cr>
+"Show file picker
+nnoremap <silent> <space>hh :<C-u>lua require("harpoon.ui").toggle_quick_menu()<cr>
+"Mark file
+nnoremap <silent> <space>hd :<C-u>lua require("harpoon.mark").rm_file()<cr>
 
 " ================ Functions ===============
 
