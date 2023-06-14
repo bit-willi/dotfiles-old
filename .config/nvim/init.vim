@@ -12,10 +12,11 @@ set visualbell                  "No sounds
 set autoread                    "Reload files changed outside vim
 set mouse=a                     "Allow use mouse to move vim cursor
 set hidden                      "Open a new buffer without save current
-set laststatus=2
-set confirm
-set splitright
-set splitbelow
+set laststatus=2                "Show if file was changed
+set confirm                     "Ask to save before quit
+set splitright                  "Following to open new split panes to right
+set splitbelow                  "Horizontal splits open below the current one
+set colorcolumn=80              "Highlight 80 column
 
 syntax on                       "Highlight syntax
 let mapleader=','               "Use ',' as <leader>
@@ -355,19 +356,6 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<cr>
 nmap <F2> <Plug>(coc-rename)
 
 " ================ Extra ===============
-
-" CocConfig:
-"{
-"    "languageserver": {
-"        "ocaml-lsp": {
-"            "command": "opam",
-"            "args": ["config", "exec", "--", "ocamllsp"],
-"            "filetypes": ["ocaml", "reason"]
-"        }
-"    },
-"    "diagnostic.virtualText": true,
-"    "diagnostic.virtualTextCurrentLineOnly": false
-"}
 
 lua << EOF
 require('telescope').setup{
